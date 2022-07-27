@@ -62,6 +62,9 @@ const cmdFlags = {
     description: "pin the note to the top of the list",
     parse: boolToYesNo
   }),
+  preview: flags.boolean({
+    description: "get callback url but do not run it"
+  }),
   search: flags.string({
     char: "s",
     description:
@@ -72,6 +75,11 @@ const cmdFlags = {
     description: "return the note currently selected in Bear",
     parse: boolToYesNo,
     dependsOn: ["token"]
+  }),
+  silent: flags.boolean({
+    char: "q",
+    description: "skip logging",
+    parse: boolToYesNo
   }),
   "show-window": flags.boolean({
     char: "w",

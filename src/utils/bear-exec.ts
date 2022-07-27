@@ -6,11 +6,21 @@ const { DEBUG } = process.env;
 
 export const client = new XCall("bear");
 
-export function bearExec<T>(action: string, rawParams: object): Promise<T> {
+export function buildParams(rawParams: object): any {
   const params: any = {};
   for (const [key, value] of Object.entries(rawParams)) {
     params[key.replace("-", "_")] = value;
   }
+
+  return params
+}
+
+export function getCommand(action: string, rawParams: object): string {
+  return client.buildCmd(action, buildParams(rawParams))
+}
+
+export function bearExec<T>(action: string, rawParams: object): Promise<T> {
+  const params = buildParams(rawParams)
 
   if (DEBUG === "true") {
     console.log("action:", action);
@@ -22,6 +32,9 @@ export function bearExec<T>(action: string, rawParams: object): Promise<T> {
       throw new CLIError("Command timed out.");
     }, 30 * 1000); // timeout of 30 seconds
 
+    if (DEBUG === "true") {
+      console.log('client: ', client)
+    }
     client
       .call(action, params)
       .then((response: string) => {

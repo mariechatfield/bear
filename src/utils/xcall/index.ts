@@ -12,13 +12,16 @@ export default class XCall {
 
   async call(action: string, params: object) {
     const xcall = `${__dirname}/xcall.app/Contents/MacOS/xcall`;
-    const cmd =
-      `${xcall} ` +
-      `-url "${this.scheme}://x-callback-url/${action}?${querystring.stringify(
-        params
-      )}"`;
+    const cmd = `${xcall} -url "${this.buildCmd(action, params)}"`
+
     const { stdout, stderr } = await execAsync(cmd);
     if (stderr) throw new Error(stderr);
     return stdout;
+  }
+
+  buildCmd(action: string, params: object) {
+    return `${this.scheme}://x-callback-url/${action}?${querystring.stringify(
+      params
+    )}`
   }
 }

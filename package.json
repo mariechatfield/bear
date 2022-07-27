@@ -64,6 +64,8 @@
     ]
   },
   "scripts": {
+    "init": "npm run copy-xcall",
+    "build": "rm -rf lib && tsc -b && npm run copy-xcall",
     "postpack": "rm -f oclif.manifest.json",
     "posttest": "eslint . --ext .ts --config .eslintrc",
     "copy-xcall": "cp -r ./src/utils/xcall/xcall.app lib/utils/xcall && cp ./src/utils/xcall/xcall-license.txt ./lib/utils/xcall/xcall-license.txt",
